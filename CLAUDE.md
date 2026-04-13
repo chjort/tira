@@ -10,7 +10,7 @@ conducts institutional-quality thematic investment research (e.g., Quantum Compu
 Clean Energy, Agentic AI) and generates Markdown reports for portfolio managers.
 
 **Status:** Early development — architecture is designed, no application code written
-yet.
+yet. Microservices should be implemented independently.
 
 ## Tech Stack
 
