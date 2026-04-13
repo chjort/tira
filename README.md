@@ -1,6 +1,14 @@
 # TIRA: Thematic Investment Research Agent
 
-....
+## Motivation
+
+New investment themes such as Quantum Computing, Clean Energy, and Agentic AI emerge
+faster than ever before. The rapid evolution of technology has made it increasingly
+more difficult for investment portfolio managers to produce timely and comprehensive
+thematic investment research across emerging sectors. TIRA solves this by being a
+scalable and flexible research platform, automatically conducting
+institutional-quality thematic investment research and generating reports for
+portfolio managers to consume.
 
 ## Design specification
 
@@ -11,8 +19,8 @@ technological development in the AI space.
 
 **Research Agent Workers**
 
-* Purpose: Perform thematic investment research and outputs a report for portfolio
-  managers.
+* Purpose: Perform thematic investment research on a given theme and outputs a report
+  for portfolio managers to consume.
 * Technology: OpenAI Agent SDK, Markdown, Python Celery.
 * Interface: Redis message queue through Celery.
 * Deployment: As a docker container through `docker compose`
@@ -36,15 +44,17 @@ technological development in the AI space.
 
 **Frontend**
 
-* Purpose: Simple UI for users to input an investment theme to be researched,
-  observe the research status, and for downloading reports of finished research.
+* Purpose: Simple UI for portfolio managers to input an investment theme to be
+  researched, observe the research status, and for downloading reports of finished
+  research.
 * Technology: Streamlit
 * Interface: Browser (HTTP)
 * Deployment: As a docker container through `docker compose`
 
-**Tracing and Observability server**
+**Tracing, Observability, and Evaluation server**
 
-* Purpose: Tracing LLM calls and Agent actions.
+* Purpose: Tracing LLM calls and Agent actions for observability and
+  performance evaluation.
 * Technology: MLFlow
 * Interface: MLFlow SDK
 * Deployment: As a docker container through `docker compose`
