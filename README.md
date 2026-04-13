@@ -17,7 +17,9 @@ modularity. This is important in order to meet enterprise-wide usage and for
 adaptability to replace or upgrade microservices to keep up with the rapid
 technological development in the AI space.
 
-**Research Agent Workers**
+### Microservices
+
+**Research Agent Worker**
 
 * Purpose: Perform thematic investment research on a given theme and outputs a report
   for portfolio managers to consume.
@@ -31,7 +33,7 @@ technological development in the AI space.
   Agent Workers and for querying task status and getting task results.
 * Technology: Python Celery, FastAPI.
 * Interface: REST API, Redis message queue through Celery.
-* Deployment: As a docker container through `docker compose`
+* Deployment: As a docker container through Docker Compose
 
 **Task Queue Broker**
 
@@ -40,7 +42,7 @@ technological development in the AI space.
   a Research Agent.
 * Technology: Redis.
 * Interface: Redis message queue through Celery.
-* Deployment: As a docker container through `docker compose`
+* Deployment: As a docker container through Docker Compose
 
 **Frontend**
 
@@ -49,7 +51,7 @@ technological development in the AI space.
   research.
 * Technology: Streamlit
 * Interface: Browser (HTTP)
-* Deployment: As a docker container through `docker compose`
+* Deployment: As a docker container through Docker Compose
 
 **Tracing, Observability, and Evaluation server**
 
@@ -57,4 +59,13 @@ technological development in the AI space.
   performance evaluation.
 * Technology: MLFlow
 * Interface: MLFlow SDK
-* Deployment: As a docker container through `docker compose`
+* Deployment: As a docker container through Docker Compose
+
+### Technology choice motivation
+
+* OpenAI Agent SDK had a good developer experience and offers a lot of flexibility.
+* Markdown is the industry standard for human and computer readable text.
+* Python Celery is the most mature task queue system in Python.
+* Redis is lightweight and very high-performant.
+* Streamlit is simple and compatible with Python.
+* MLFlow is lightweight and easy to self-host.
