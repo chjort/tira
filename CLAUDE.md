@@ -43,5 +43,6 @@ Five microservices, all deployed as Docker containers via `docker compose`:
 - Use `uv` for all Python dependency and environment management, never `pip` directly
 - All agent code is async (`asyncio`-based)
 - Reports are output as Markdown
-- Tracing goes to MLFlow (disable openai-agents built-in tracing)
+- LLM and Agent tracing goes to MLFlow (using `mlflow.openai.autolog()`)
+- LLM and Agent evaluation is performed using MLFlow
 - Tests verify end-to-end research flow and cross-service integration
