@@ -1,12 +1,16 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in
+this repository.
 
 ## Project Overview
 
-TIRA (Thematic Investment Research Agent) is an AI-powered platform that automatically conducts institutional-quality thematic investment research (e.g., Quantum Computing, Clean Energy, Agentic AI) and generates Markdown reports for portfolio managers.
+TIRA (Thematic Investment Research Agent) is an AI-powered platform that automatically
+conducts institutional-quality thematic investment research (e.g., Quantum Computing,
+Clean Energy, Agentic AI) and generates Markdown reports for portfolio managers.
 
-**Status:** Early development — architecture is designed, no application code written yet.
+**Status:** Early development — architecture is designed, no application code written
+yet.
 
 ## Tech Stack
 
@@ -32,10 +36,13 @@ docker compose up         # Start all services
 
 Five microservices, all deployed as Docker containers via `docker compose`:
 
-1. **Research Agent Worker** — Celery worker running the OpenAI Agent SDK to produce Markdown research reports. Receives tasks via Redis.
-2. **Task Queue Backend** — FastAPI app + Celery client. REST API for submitting research tasks, checking status, retrieving results.
+1. **Research Agent Worker** — Celery worker running the OpenAI Agent SDK to produce
+   Markdown research reports. Receives tasks via Redis.
+2. **Task Queue Backend** — FastAPI app + Celery client. REST API for submitting
+   research tasks, checking status, retrieving results.
 3. **Task Queue Broker** — Redis instance (Celery message broker and result backend).
-4. **Frontend** — Streamlit app for portfolio managers to submit themes and download reports.
+4. **Frontend** — Streamlit app for portfolio managers to submit themes and download
+   reports.
 5. **Tracing Server** — MLFlow instance for LLM call tracing and agent observability.
 
 ## Key Conventions
@@ -46,3 +53,6 @@ Five microservices, all deployed as Docker containers via `docker compose`:
 - LLM and Agent tracing goes to MLFlow (using `mlflow.openai.autolog()`)
 - LLM and Agent evaluation is performed using MLFlow
 - Tests verify end-to-end research flow and cross-service integration
+- Source-code for microservices is kept separate and each microservice is developed
+  independently.
+- Source-code always follow best-practices with modular code and docstrings.
