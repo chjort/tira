@@ -12,7 +12,9 @@ portfolio managers to consume.
 
 ## Design specification
 
-The system is based on a microservice design to allow scalability, flexibility and
+TIRA is a Python based solution managed with `uv` and `docker compose`.
+
+The TIRA system follows a microservice design to allow scalability, flexibility and
 modularity. This is important in order to meet enterprise-wide usage and for
 adaptability to replace or upgrade microservices to keep up with the rapid
 technological development in the AI space.
@@ -69,3 +71,9 @@ technological development in the AI space.
 * Redis is lightweight and very high-performant.
 * Streamlit is simple and compatible with Python.
 * MLFlow is lightweight and easy to self-host.
+
+## Testing
+
+Tests are written using `pytest` and test cases are written to verify that the
+thematic investment research flow runs end-to-end and that all microservices
+integrate correctly.
