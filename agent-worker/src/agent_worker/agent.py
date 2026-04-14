@@ -33,7 +33,8 @@ async def run_research(theme: str) -> str:
     """
     async with AsyncOpenAI(base_url=OPENAI_BASE_URL) as client:
         agent = build_research_agent()
-        prompt = f"Conduct comprehensive thematic investment research on: {theme}"
+        prompt = (f"Conduct comprehensive thematic investment research on: {theme}. "
+                  f"Search the web for companies within the sector.")
         result = await Runner.run(
             agent,
             prompt,
