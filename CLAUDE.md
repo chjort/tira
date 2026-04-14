@@ -9,8 +9,8 @@ TIRA (Thematic Investment Research Agent) is an AI-powered platform that automat
 conducts institutional-quality thematic investment research (e.g., Quantum Computing,
 Clean Energy, Agentic AI) and generates Markdown reports for portfolio managers.
 
-**Status:** Early development — architecture is designed, no application code written
-yet. Microservices should be implemented independently.
+**Status:** Core implementation complete. All five microservices are implemented and
+orchestrated via Docker Compose.
 
 ## Tech Stack
 
@@ -58,4 +58,13 @@ Five microservices, all deployed as Docker containers via `docker compose`:
 - Source-code for microservices is kept separate and each microservice is developed
   independently.
 - Source-code always follow best-practices with modular code and docstrings.
-- Python code should always be formatted with the Black formatter and imports sorted with Isort.
+- Python code should always be formatted with the Black formatter and imports sorted
+  with Isort.
+
+## Development notes
+
+- Each microservice uses `src/` layout with hatchling
+- Agent worker uses `--pool=threads` (not prefork) for asyncio compatibility
+- The only coupling between backend and worker is the Celery task name string:
+  `"agent_worker.tasks.run_research_task"` — defined in both `celery_client.py` and
+  `tasks.py`. Never import agent_worker code from the backend.
