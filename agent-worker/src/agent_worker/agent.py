@@ -31,12 +31,12 @@ async def run_research(theme: str) -> str:
     Returns:
         A Markdown-formatted research report.
     """
-    client = AsyncOpenAI(base_url=OPENAI_BASE_URL)
-    agent = build_research_agent()
-    prompt = f"Conduct comprehensive thematic investment research on: {theme}"
-    result = await Runner.run(
-        agent,
-        prompt,
-        run_config=RunConfig(model_provider=OpenAIProvider(openai_client=client)),
-    )
-    return result.final_output
+    async with AsyncOpenAI(base_url=OPENAI_BASE_URL) as client:
+        agent = build_research_agent()
+        prompt = f"Conduct comprehensive thematic investment research on: {theme}"
+        result = await Runner.run(
+            agent,
+            prompt,
+            run_config=RunConfig(model_provider=OpenAIProvider(openai_client=client)),
+        )
+        return result.final_output
