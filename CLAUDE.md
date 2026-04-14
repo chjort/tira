@@ -36,6 +36,30 @@ Five microservices, all deployed as Docker containers via `docker compose`:
    reports.
 5. **Tracing Server** — MLFlow instance for LLM call tracing and agent observability.
 
+## Environment Setup
+
+Copy `.env.example` to `.env` and set `OPENAI_API_KEY`. The `OPENAI_BASE_URL` defaults
+to `https://api.marketplace.novo-genai.com/v1` (Novo Nordisk AI marketplace, not
+standard OpenAI).
+
+## Service Ports
+
+| Service          | Port |
+|------------------|------|
+| Frontend         | 8501 |
+| Backend API      | 8000 |
+| Tracing (MLFlow) | 5000 |
+| Redis Broker     | 6379 |
+
+## Testing
+
+E2E tests require all services running:
+
+```bash
+docker compose up -d --build       # Start stack in background
+uv run pytest tests/ -m e2e -v  # Run e2e tests against live services
+```
+
 ## Key Conventions
 
 - Use `uv` for all Python dependency and environment management, never `pip` directly
@@ -47,8 +71,8 @@ Five microservices, all deployed as Docker containers via `docker compose`:
 - Source-code for microservices is kept separate and each microservice is developed
   independently.
 - Source-code always follow best-practices with modular code and docstrings.
-- Python code should always be formatted with the Black formatter and imports sorted
-  with Isort.
+- Python code should always be formatted with Ruff (Black-compatible) and imports sorted
+  with Ruff's built-in isort rules.
 
 ## Development notes
 
@@ -65,6 +89,8 @@ uv add <package>            # Add dependency
 uv run <script.py>          # Run a script
 uv run pytest               # Run tests
 docker compose up           # Start all services
-uvx ruff check              # Format with Black
-uvx isort --sl --profile black  # Sort Python imports
+docker compose build        # Rebuild images after code changes
+uvx ruff check --select I --fix  # Sort imports (isort-compatible)
+uvx ruff check              # Lint Python code
+uvx ruff format             # Format Python code
 ```
