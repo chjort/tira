@@ -34,7 +34,6 @@ def run_research_task(self, theme: str) -> str:
         Markdown report string, stored in the Celery result backend.
     """
     try:
-        configure_tracing()
         return asyncio.run(run_research(theme))
     except Exception as exc:
         raise self.retry(exc=exc)
