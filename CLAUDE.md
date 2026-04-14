@@ -26,10 +26,12 @@ yet. Microservices should be implemented independently.
 ## Commands
 
 ```bash
-uv add <package>          # Add dependency
-uv run <script.py>        # Run a script
-uv run pytest             # Run tests
-docker compose up         # Start all services
+uv add <package>            # Add dependency
+uv run <script.py>          # Run a script
+uv run pytest               # Run tests
+docker compose up           # Start all services
+uvx black                   # Format with Black
+isort --sl --profile black  # Sort Python imports
 ```
 
 ## Architecture
@@ -56,3 +58,4 @@ Five microservices, all deployed as Docker containers via `docker compose`:
 - Source-code for microservices is kept separate and each microservice is developed
   independently.
 - Source-code always follow best-practices with modular code and docstrings.
+- Python code should always be formatted with the Black formatter and imports sorted with Isort.
