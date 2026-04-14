@@ -64,6 +64,10 @@ curl -X POST http://localhost:8000/research \
 
 ### Running Tests
 
+Tests are written using `pytest` and test cases are written to verify that the
+thematic investment research flow runs end-to-end and that all microservices
+integrate correctly.
+
 With all services running:
 
 ```bash
@@ -131,9 +135,3 @@ technological development in the AI space.
 * Redis is lightweight and very high-performant.
 * Streamlit is simple and compatible with Python.
 * MLFlow is lightweight and easy to self-host.
-
-## Testing
-
-Tests are written using `pytest` and test cases are written to verify that the
-thematic investment research flow runs end-to-end and that all microservices
-integrate correctly.
