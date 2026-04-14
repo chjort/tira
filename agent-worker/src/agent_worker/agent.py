@@ -12,7 +12,6 @@ def build_research_agent() -> Agent:
         instructions=RESEARCH_AGENT_INSTRUCTIONS,
         model="openai_gpt52",
         model_settings=ModelSettings(temperature=0.2),
-        tools=[WebSearchTool()],
     )
 
 
