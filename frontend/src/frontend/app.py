@@ -8,61 +8,112 @@ from frontend.api_client import get_result
 from frontend.api_client import get_status
 from frontend.api_client import submit_research
 
+TERMINAL_STATUSES: frozenset[str] = frozenset({"SUCCESS", "FAILURE", "REVOKED"})
+POLL_INTERVAL_SECONDS: int = 3
+
+
+def _init_session_state() -> None:
+    """Initialise session state keys on first load."""
+    if "tasks" not in st.session_state:
+        st.session_state["tasks"] = []
+
+
+def _handle_form_submission() -> None:
+    """Render the research submission form and handle new task creation."""
+    with st.form("research_form"):
+        theme = st.text_input(
+            "Investment Theme",
+            placeholder="e.g., Quantum Computing, Clean Energy, Agentic AI",
+        )
+        submitted = st.form_submit_button("Start Research")
+
+    if submitted and theme:
+        response = submit_research(theme)
+        task: dict = {
+            "task_id": response["task_id"],
+            "theme": theme,
+            "status": "PENDING",
+            "result": None,
+            "error": None,
+        }
+        st.session_state["tasks"].append(task)
+
+
+def _poll_and_update_tasks() -> bool:
+    """Poll status for all non-terminal tasks and cache results.
+
+    Returns:
+        True if any tasks are still active (polling required), False otherwise.
+    """
+    has_active = False
+    for task in st.session_state["tasks"]:
+        if task["status"] in TERMINAL_STATUSES:
+            continue
+
+        has_active = True
+        status_data = get_status(task["task_id"])
+        task["status"] = status_data["status"]
+
+        if task["status"] == "SUCCESS" and task["result"] is None:
+            result_data = get_result(task["task_id"])
+            task["result"] = result_data["result"]
+
+        if task["status"] == "FAILURE" and task["error"] is None:
+            task["error"] = status_data.get("error", "Unknown error")
+
+    return has_active
+
+
+def _render_task_list() -> None:
+    """Render all research tasks as a list of expandable widgets."""
+    tasks = st.session_state["tasks"]
+    if not tasks:
+        return
+
+    st.divider()
+    st.subheader("Research Tasks")
+
+    for task in reversed(tasks):
+        task_id = task["task_id"]
+        theme = task["theme"]
+        status = task["status"]
+        label = f"{theme} — {status}"
+
+        with st.expander(label):
+            st.caption(f"Task ID: {task_id}")
+
+            if status in ("PENDING", "STARTED", "RETRY"):
+                st.info(f"Status: **{status}** — research in progress...")
+
+            elif status == "SUCCESS":
+                st.success("Research complete!")
+                st.markdown(task["result"])
+                file_name = f"tira_{theme.replace(' ', '_').lower()}.md"
+                st.download_button(
+                    label="Download Report",
+                    data=task["result"],
+                    file_name=file_name,
+                    mime="text/markdown",
+                    key=f"download_{task_id}",
+                )
+
+            elif status == "FAILURE":
+                st.error(f"Research failed: {task['error']}")
+
+            elif status == "REVOKED":
+                st.warning("Task was revoked.")
+
+
+# --- Main ---
 st.set_page_config(page_title="TIRA", page_icon=":chart_with_upwards_trend:")
 st.title("TIRA — Thematic Investment Research Agent")
 st.caption("AI-powered thematic investment research for portfolio managers")
 
-# --- Input form ---
-with st.form("research_form"):
-    theme = st.text_input(
-        "Investment Theme",
-        placeholder="e.g., Quantum Computing, Clean Energy, Agentic AI",
-    )
-    submitted = st.form_submit_button("Start Research")
+_init_session_state()
+_handle_form_submission()
+has_active = _poll_and_update_tasks()
+_render_task_list()
 
-if submitted and theme:
-    response = submit_research(theme)
-    st.session_state["task_id"] = response["task_id"]
-    st.session_state["theme"] = theme
-    st.session_state["status"] = "PENDING"
-
-# --- Status display and polling ---
-if "task_id" in st.session_state:
-    task_id = st.session_state["task_id"]
-    theme_name = st.session_state.get("theme", "")
-
-    status_data = get_status(task_id)
-    status = status_data["status"]
-    st.session_state["status"] = status
-
-    st.divider()
-    st.subheader(f"Research: {theme_name}")
-    st.text(f"Task ID: {task_id}")
-
-    if status in ("PENDING", "STARTED"):
-        st.info(f"Status: **{status}** — research in progress...")
-        time.sleep(3)
-        st.rerun()
-
-    elif status == "SUCCESS":
-        st.success("Research complete!")
-        result_data = get_result(task_id)
-        report_md = result_data["result"]
-
-        st.markdown(report_md)
-
-        file_name = f"tira_{theme_name.replace(' ', '_').lower()}.md"
-        st.download_button(
-            label="Download Report",
-            data=report_md,
-            file_name=file_name,
-            mime="text/markdown",
-        )
-
-    elif status == "FAILURE":
-        st.error(f"Research failed: {status_data.get('error', 'Unknown error')}")
-
-    elif status == "RETRY":
-        st.warning("Task is being retried...")
-        time.sleep(5)
-        st.rerun()
+if has_active:
+    time.sleep(POLL_INTERVAL_SECONDS)
+    st.rerun()
