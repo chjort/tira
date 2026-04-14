@@ -10,6 +10,59 @@ scalable and flexible research platform, automatically conducting
 institutional-quality thematic investment research and generating reports for
 portfolio managers to consume.
 
+## Getting Started
+
+### Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/) and Docker Compose
+- An [OpenAI API key](https://platform.openai.com/api-keys)
+
+### Setup
+
+1. Clone the repository and create your environment file:
+
+```bash
+cp .env.example .env
+```
+
+2. Add your OpenAI API key to `.env`:
+
+```
+OPENAI_API_KEY=sk-...
+```
+
+3. Build and start all services:
+
+```bash
+docker compose up --build
+```
+
+### Usage
+
+| Service   | URL                   |
+|-----------|-----------------------|
+| Frontend  | http://localhost:8501 |
+| REST API  | http://localhost:8000 |
+| MLflow UI | http://localhost:5000 |
+
+Open the frontend to submit an investment theme and download the generated report.
+
+To submit a research task via the API directly:
+
+```bash
+curl -X POST http://localhost:8000/research \
+  -H "Content-Type: application/json" \
+  -d '{"theme": "Quantum Computing"}'
+```
+
+### Running Tests
+
+With all services running:
+
+```bash
+uv run pytest tests/ -m e2e -v
+```
+
 ## Design specification
 
 TIRA is a Python based solution managed with `uv` and `docker compose`.
