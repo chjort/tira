@@ -70,7 +70,7 @@ uv run pytest tests/ -m e2e -v  # Run e2e tests against live services
 - Tests verify end-to-end research flow and cross-service integration
 - Source-code for microservices is kept separate and each microservice is developed
   independently.
-- Source-code always follow best-practices with modular code and docstrings.
+- Source-code always must be modular with smaller functions and have docstrings.
 - Python code should always be formatted with Ruff (Black-compatible) and imports sorted
   with Ruff's built-in isort rules.
 
