@@ -1,0 +1,59 @@
+services:
+  broker:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  tracing-server:
+    build: ./tracing-server
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow_data:/mlflow
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  agent-worker:
+    build: ./agent-worker
+    environment:
+      - CELERY_BROKER_URL=redis://broker:6379/0
+      - CELERY_RESULT_BACKEND=redis://broker:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - MLFLOW_TRACKING_URI=http://tracing-server:5000
+      - MLFLOW_EXPERIMENT_NAME=TIRA Research Agent
+    depends_on:
+      broker:
+        condition: service_healthy
+      tracing-server:
+        condition: service_healthy
+
+  task-queue-backend:
+    build: ./task-queue-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - CELERY_BROKER_URL=redis://broker:6379/0
+      - CELERY_RESULT_BACKEND=redis://broker:6379/0
+    depends_on:
+      broker:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://task-queue-backend:8000
+    depends_on:
+      - task-queue-backend
+
+volumes:
+  mlflow_data:
