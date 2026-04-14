@@ -4,7 +4,9 @@ import time
 
 import streamlit as st
 
-from frontend.api_client import get_result, get_status, submit_research
+from frontend.api_client import get_result
+from frontend.api_client import get_status
+from frontend.api_client import submit_research
 
 st.set_page_config(page_title="TIRA", page_icon=":chart_with_upwards_trend:")
 st.title("TIRA — Thematic Investment Research Agent")

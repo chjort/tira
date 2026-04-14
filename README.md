@@ -15,7 +15,7 @@ portfolio managers to consume.
 ### Prerequisites
 
 - [Docker](https://docs.docker.com/get-docker/) and Docker Compose
-- An [OpenAI API key](https://platform.openai.com/api-keys)
+- An API key for an OpenAI-compatible LLM provider
 
 ### Setup
 
@@ -25,10 +25,17 @@ portfolio managers to consume.
 cp .env.example .env
 ```
 
-2. Add your OpenAI API key to `.env`:
+2. Add your API key to `.env`:
 
 ```
 OPENAI_API_KEY=sk-...
+```
+
+Optionally, set a custom base URL for the LLM provider. This defaults to
+`https://api.marketplace.novo-genai.com/v1`:
+
+```
+OPENAI_BASE_URL=https://api.marketplace.novo-genai.com/v1
 ```
 
 3. Build and start all services:
