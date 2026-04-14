@@ -10,7 +10,7 @@ def build_research_agent() -> Agent:
     return Agent(
         name="TIRA Research Agent",
         instructions=RESEARCH_AGENT_INSTRUCTIONS,
-        model="gpt-4.1",
+        model="openai_gpt52",
         model_settings=ModelSettings(temperature=0.2),
         tools=[WebSearchTool()],
     )
