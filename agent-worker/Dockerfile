@@ -9,5 +9,8 @@ RUN uv sync --no-dev
 
 COPY src/ ./src/
 
+RUN useradd --create-home worker
+USER worker
+
 CMD ["uv", "run", "celery", "-A", "agent_worker.celery_app", "worker", \
      "--loglevel=info", "--pool=threads", "--concurrency=4"]
