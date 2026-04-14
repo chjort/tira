@@ -66,5 +66,5 @@ uv run <script.py>          # Run a script
 uv run pytest               # Run tests
 docker compose up           # Start all services
 uvx ruff check              # Format with Black
-isort --sl --profile black  # Sort Python imports
+uvx isort --sl --profile black  # Sort Python imports
 ```
