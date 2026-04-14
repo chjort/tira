@@ -23,17 +23,6 @@ orchestrated via Docker Compose.
 - **MLFlow** for LLM tracing and observability
 - **pytest** for testing (integration/e2e focus)
 
-## Commands
-
-```bash
-uv add <package>            # Add dependency
-uv run <script.py>          # Run a script
-uv run pytest               # Run tests
-docker compose up           # Start all services
-uvx ruff check              # Format with Black
-isort --sl --profile black  # Sort Python imports
-```
-
 ## Architecture
 
 Five microservices, all deployed as Docker containers via `docker compose`:
@@ -68,3 +57,14 @@ Five microservices, all deployed as Docker containers via `docker compose`:
 - The only coupling between backend and worker is the Celery task name string:
   `"agent_worker.tasks.run_research_task"` — defined in both `celery_client.py` and
   `tasks.py`. Never import agent_worker code from the backend.
+
+## Commands
+
+```bash
+uv add <package>            # Add dependency
+uv run <script.py>          # Run a script
+uv run pytest               # Run tests
+docker compose up           # Start all services
+uvx ruff check              # Format with Black
+isort --sl --profile black  # Sort Python imports
+```
