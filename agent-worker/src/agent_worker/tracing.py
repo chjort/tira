@@ -1,7 +1,6 @@
 """MLflow tracing configuration for OpenAI agent calls."""
 
 import mlflow
-
 from agent_worker import config
 
 

@@ -30,7 +30,7 @@ uv add <package>            # Add dependency
 uv run <script.py>          # Run a script
 uv run pytest               # Run tests
 docker compose up           # Start all services
-uvx black                   # Format with Black
+uvx ruff check              # Format with Black
 isort --sl --profile black  # Sort Python imports
 ```
 
