@@ -1,7 +1,18 @@
 [project]
 name = "tira"
 version = "0.1.0"
-description = "Add your description here"
+description = "TIRA — Thematic Investment Research Agent"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "httpx",
+]
+
+[tool.pytest.ini_options]
+markers = [
+    "e2e: requires all services running via docker compose",
+]
