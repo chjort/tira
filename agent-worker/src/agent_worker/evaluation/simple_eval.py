@@ -39,48 +39,23 @@ from agent_worker.evaluation.scorers.code_based import top_companies_extracted
 
 logger = logging.getLogger(__name__)
 
-_SUITE_REGISTRY: dict[str, dict] = {
-    "groundedness": {
-        "dataset": "placeholder",
-        # "dataset": "groundedness",
-        "scorers": [
-            inline_citations_present,
-            # groundedness_score,
-        ],
-    },
-    "source_quality": {
-        "dataset": "placeholder",
-        # "dataset": "source_quality",
-        "scorers": [
-            inline_citations_present,
-            # source_quality_score,
-        ],
-    },
-    "coverage": {
-        "dataset": "coverage",
-        "scorers": [
-            required_sections_present,
-            required_subsections_present,
-            markdown_table_count,
-            minimum_word_count,
-            ticker_symbols_present,
-            top_companies_extracted,
-            competitive_landscape_table_present,
-            risk_register_table_present,
-            # coverage_completeness_score,
-        ],
-    },
-    "factual_accuracy": {
-        "dataset": "placeholder",
-        # "dataset": "factual_accuracy",
-        "scorers": [
-            financial_comparison_section_present,
-            # factual_specificity_score,
-        ],
-    },
-}
-
-SUITE_NAMES: list[str] = list(_SUITE_REGISTRY.keys())
+_DATASET = "expectations_dataset"
+_SCORERS = [
+    inline_citations_present,
+    required_sections_present,
+    required_subsections_present,
+    markdown_table_count,
+    minimum_word_count,
+    ticker_symbols_present,
+    top_companies_extracted,
+    competitive_landscape_table_present,
+    risk_register_table_present,
+    financial_comparison_section_present,
+    # groundedness_score,
+    # source_quality_score,
+    # coverage_completeness_score,
+    # factual_specificity_score,
+]
 
 
 def _get_run_id_by_name(run_name: str) -> str | None:
@@ -105,51 +80,26 @@ def _get_run_id_by_name(run_name: str) -> str | None:
     return None
 
 
-def run_suite(suite_name: str, theme: str, report: str) -> None:
-    """Run a single evaluation suite and log results to MLflow.
+def run_evaluation(
+    theme: str,
+    report: str,
+) -> None:
+    """Run evaluation for a completed research report.
 
     Loads the suite's dataset, builds the evaluation data, and calls
     ``mlflow.genai.evaluate()`` within an MLflow run. Results are logged
     as a side-effect to the currently active MLflow experiment.
 
     Args:
-        suite_name: Key into the suite registry (e.g. ``"groundedness"``).
         theme: The investment theme that was researched.
         report: The Markdown report produced by the agent.
-
-    Raises:
-        KeyError: If *suite_name* is not in the suite registry.
     """
-    spec = _SUITE_REGISTRY[suite_name]
-    dataset = load_dataset(spec["dataset"])
-    eval_data = build_eval_data(dataset, theme, report)
-
-    run_name = f"prod:{suite_name}"
-    run_id = _get_run_id_by_name(run_name)
-    with mlflow.start_run(run_id=run_id, run_name=run_name):
-        mlflow.genai.evaluate(data=eval_data, scorers=spec["scorers"])
-
-
-def run_evaluation(
-    theme: str,
-    report: str,
-    suite_names: list[str] | None = None,
-) -> None:
-    """Run evaluation suites for a completed research report.
-
-    Iterates over the requested suites and calls :func:`run_suite` for each.
-    Individual suite failures are logged as warnings and do not propagate,
-    so a scorer crash never fails the calling Celery task.
-
-    Args:
-        theme: The investment theme that was researched.
-        report: The Markdown report produced by the agent.
-        suite_names: Suite names to run. Defaults to all registered suites.
-    """
-    suites = suite_names if suite_names is not None else SUITE_NAMES
-
-    for name in suites:
-        try:
-            run_suite(name, theme, report)
-        except Exception:
-            logger.exception("Evaluation suite %r failed for theme %r.", name, theme)
+    try:
+        dataset = load_dataset(_DATASET)
+        eval_data = build_eval_data(dataset, theme, report)
+        run_name = "prod:evaluations"
+        run_id = _get_run_id_by_name(run_name)
+        with mlflow.start_run(run_id=run_id, run_name=run_name):
+            mlflow.genai.evaluate(data=eval_data, scorers=_SCORERS)
+    except Exception:
+        logger.exception("Evaluation failed for theme %r.", theme)

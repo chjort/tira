@@ -17,11 +17,3 @@ OPENAI_BASE_URL: str = os.environ.get(
 )
 EVAL_JUDGE_MODEL: str = os.environ.get("EVAL_JUDGE_MODEL", "openai_gpt52")
 EVAL_ENABLED: bool = os.environ.get("EVAL_ENABLED", "false").lower() == "true"
-EVAL_SUITES: list[str] = [
-    s.strip()
-    for s in os.environ.get(
-        "EVAL_SUITES",
-        "groundedness,source_quality,coverage,factual_accuracy",
-    ).split(",")
-    if s.strip()
-]

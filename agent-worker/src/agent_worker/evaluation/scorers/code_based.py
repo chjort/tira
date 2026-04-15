@@ -11,26 +11,24 @@ import re
 from mlflow.entities import Feedback
 from mlflow.genai.scorers import scorer
 
+
 # ---------------------------------------------------------------------------
 # Section / subsection presence
 # ---------------------------------------------------------------------------
 
-_REQUIRED_SECTIONS = [
-    "Executive Summary",
-    "Theme Overview",
-    "Market Dynamics",
-    "Investment Opportunities",
-    "Key Companies",
-    "Financial Comparison",
-    "Investment Implications",
-]
-
 
 @scorer
-def required_sections_present(outputs: str) -> Feedback:
+def required_sections_present(outputs: str, expectations: dict) -> Feedback:
     """Check that all 7 top-level report sections are present."""
+    expected = expectations.get("expected_sections", [])
+    if not expected:
+        return Feedback(
+            name="required_sections_present",
+            value=1.0,
+            rationale="No expected sections defined",
+        )
     report_lower = outputs.lower()
-    missing = [s for s in _REQUIRED_SECTIONS if s.lower() not in report_lower]
+    missing = [s for s in expected if s.lower() not in report_lower]
     return Feedback(
         name="required_sections_present",
         value=len(missing) == 0,

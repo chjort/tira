@@ -33,7 +33,7 @@ def _evaluate_report(theme: str, report: str) -> None:
     if not config.EVAL_ENABLED:
         return
     try:
-        run_evaluation(theme, report, suite_names=config.EVAL_SUITES)
+        run_evaluation(theme, report)
     except Exception:
         logger.exception("Evaluation failed for theme %r; skipping.", theme)
 
