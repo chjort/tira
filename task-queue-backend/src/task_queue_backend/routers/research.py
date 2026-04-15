@@ -1,13 +1,14 @@
 """REST API endpoints for submitting and querying research tasks."""
 
 from celery.result import AsyncResult
-from fastapi import APIRouter
-from fastapi import HTTPException
-from task_queue_backend.celery_client import RESEARCH_TASK_NAME
-from task_queue_backend.celery_client import celery_client
-from task_queue_backend.schemas import ResearchRequest
-from task_queue_backend.schemas import TaskStatusResponse
-from task_queue_backend.schemas import TaskSubmittedResponse
+from fastapi import APIRouter, HTTPException
+
+from task_queue_backend.celery_client import RESEARCH_TASK_NAME, celery_client
+from task_queue_backend.schemas import (
+    ResearchRequest,
+    TaskStatusResponse,
+    TaskSubmittedResponse,
+)
 
 router = APIRouter()
 

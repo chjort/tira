@@ -5,6 +5,7 @@ services is the task name string.
 """
 
 from celery import Celery
+
 from task_queue_backend.config import settings
 
 celery_client = Celery(

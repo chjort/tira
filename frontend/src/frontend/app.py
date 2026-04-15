@@ -4,9 +4,7 @@ import time
 
 import streamlit as st
 
-from frontend.api_client import get_result
-from frontend.api_client import get_status
-from frontend.api_client import submit_research
+from frontend.api_client import get_result, get_status, submit_research
 
 TERMINAL_STATUSES: frozenset[str] = frozenset({"SUCCESS", "FAILURE", "REVOKED"})
 POLL_INTERVAL_SECONDS: int = 3
