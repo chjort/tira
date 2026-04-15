@@ -1,0 +1,17 @@
+[
+  {
+    "id": "GR-001",
+    "description": "All quantitative market claims must have inline citations",
+    "grading_notes": "Check that market size, CAGR, and revenue figures have explicit source attributions (e.g. 'BloombergNEF estimates', 'according to McKinsey'). No unsourced numeric claims."
+  },
+  {
+    "id": "GR-002",
+    "description": "Company exposure percentages and financial data must be sourced",
+    "grading_notes": "Revenue exposure percentages, margin figures, and valuation multiples must cite a source such as company filings, Bloomberg, or Refinitiv."
+  },
+  {
+    "id": "GR-003",
+    "description": "Regulatory catalysts and policy references must be grounded",
+    "grading_notes": "Each regulatory or policy reference should name a specific law, regulation, or executive order with jurisdiction and year. Vague references like 'government support' are insufficient."
+  }
+]

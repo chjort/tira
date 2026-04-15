@@ -1,0 +1,31 @@
+[
+  {
+    "id": "CV-001",
+    "description": "All required report sections and subsections must be present with sufficient depth",
+    "grading_notes": "Report must contain all 7 top-level sections and 10 subsections as defined by the orchestrator prompt. Must include at least 3 Markdown tables, 6 company tickers, and 2000 words.",
+    "expected_sections": [
+      "Executive Summary",
+      "Theme Overview",
+      "Market Dynamics",
+      "Investment Opportunities",
+      "Key Companies",
+      "Financial Comparison",
+      "Investment Implications"
+    ],
+    "expected_subsections": [
+      "Market Size",
+      "Key Drivers",
+      "Headwinds",
+      "Competitive Landscape",
+      "Investment Thesis",
+      "Portfolio Positioning",
+      "Risk Factors",
+      "Universe of Exposed Companies",
+      "Moat Analysis",
+      "Top Two"
+    ],
+    "min_table_count": 3,
+    "min_company_count": 6,
+    "min_word_count": 2000
+  }
+]
