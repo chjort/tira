@@ -2,6 +2,10 @@
 
 import asyncio
 
+from agents.exceptions import (
+    InputGuardrailTripwireTriggered,
+    OutputGuardrailTripwireTriggered,
+)
 from celery import signals
 
 from agent_worker.agent import run_research
@@ -35,5 +39,9 @@ def run_research_task(self, theme: str) -> str:
     """
     try:
         return asyncio.run(run_research(theme))
+    except InputGuardrailTripwireTriggered as exc:
+        return f"ERROR: Invalid or unsafe theme — {exc}"
+    except OutputGuardrailTripwireTriggered as exc:
+        return f"ERROR: Report failed structural validation — {exc}"
     except Exception as exc:
         raise self.retry(exc=exc)
