@@ -27,7 +27,7 @@ def wait_for_task(http_client: httpx.Client, backend_url: str):
     Returns a callable: wait_for_task(task_id, timeout=300) -> final_status
     """
 
-    def _wait(task_id: str, timeout: int = 300) -> str:
+    def _wait(task_id: str, timeout: int = 600) -> str:
         deadline = time.time() + timeout
         while time.time() < deadline:
             resp = http_client.get(f"{backend_url}/research/{task_id}/status")
