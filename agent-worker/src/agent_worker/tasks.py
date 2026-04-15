@@ -2,10 +2,11 @@
 
 import asyncio
 
+from celery import signals
+
 from agent_worker.agent import run_research
 from agent_worker.celery_app import app
 from agent_worker.tracing import configure_tracing
-from celery import signals
 
 
 @signals.worker_init.connect

@@ -81,6 +81,8 @@ uv run pytest tests/ -m e2e -v  # Run e2e tests against live services
 - The only coupling between backend and worker is the Celery task name string:
   `"agent_worker.tasks.run_research_task"` — defined in both `celery_client.py` and
   `tasks.py`. Never import agent_worker code from the backend.
+- To inspect packages for a microservice, first be sure to run `uv sync` inside it's
+  folder to generate it's .venv folder.
 
 ## Commands
 

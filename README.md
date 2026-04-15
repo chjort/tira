@@ -10,6 +10,13 @@ scalable and flexible research platform, automatically conducting
 institutional-quality thematic investment research and generating reports for
 portfolio managers to consume.
 
+## What the Thematic Investment Research covers
+
+* Research for understanding market dynamics.
+* Research for evaluating investment opportunities.
+* Research for identifying and evaluating company exposure.
+* Comparing financials for the top two most prospective companies to invest in.
+
 ## Getting Started
 
 ### Prerequisites

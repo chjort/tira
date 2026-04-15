@@ -1,7 +1,8 @@
 """Celery application instance and configuration for the agent worker."""
 
-from agent_worker import config
 from celery import Celery
+
+from agent_worker import config
 
 app = Celery("agent_worker")
 app.config_from_object(

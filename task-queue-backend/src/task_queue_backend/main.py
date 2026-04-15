@@ -1,6 +1,7 @@
 """FastAPI application for the TIRA Task Queue Backend."""
 
 from fastapi import FastAPI
+
 from task_queue_backend.routers import research
 
 app = FastAPI(title="TIRA Task Queue Backend", version="0.1.0")
