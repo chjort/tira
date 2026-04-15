@@ -43,6 +43,7 @@ _SUITE_REGISTRY: dict[str, dict] = {
             inline_citations_present,
             # groundedness_score,
         ],
+        "run_id": "e161f4e08a944677a6d41c1fb8333a47",
     },
     "source_quality": {
         "dataset": "placeholder",
@@ -51,6 +52,7 @@ _SUITE_REGISTRY: dict[str, dict] = {
             inline_citations_present,
             # source_quality_score,
         ],
+        "run_id": "519266ef44444e668982b64a68d6c978",
     },
     "coverage": {
         "dataset": "coverage",
@@ -65,6 +67,7 @@ _SUITE_REGISTRY: dict[str, dict] = {
             risk_register_table_present,
             # coverage_completeness_score,
         ],
+        "run_id": "5057600607a147a39728f16d319888fa",
     },
     "factual_accuracy": {
         "dataset": "placeholder",
@@ -73,6 +76,7 @@ _SUITE_REGISTRY: dict[str, dict] = {
             financial_comparison_section_present,
             # factual_specificity_score,
         ],
+        "run_id": "34a3e9406cca4f66b0698577583405d5",
     },
 }
 
@@ -98,7 +102,7 @@ def run_suite(suite_name: str, theme: str, report: str) -> None:
     dataset = load_dataset(spec["dataset"])
     eval_data = build_eval_data(dataset, theme, report)
 
-    with mlflow.start_run(run_name=f"prod:{suite_name}"):
+    with mlflow.start_run(run_id=spec["run_id"]):
         mlflow.genai.evaluate(data=eval_data, scorers=spec["scorers"])
 
 
