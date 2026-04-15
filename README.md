@@ -17,6 +17,44 @@ portfolio managers to consume.
 * Research for identifying and evaluating company exposure.
 * Comparing financials for the top two most prospective companies to invest in.
 
+## How the Thematic Investment Research is evaluated
+
+Success criteria:
+
+1. Grounded in reality and claims supported by sources.
+2. Sources are high-quality and credible.
+3. Sufficient coverage of requested information.
+4. Facts and numbers are exact match from source and verifiable.
+
+Test suites:
+
+* A test suite for each of the four success criteria with each suite containing
+  multiple test cases.
+
+Test cases:
+
+* A measurable task that defines input instructions and expected output/behavior
+  for a Research Agent.
+* Test cases may also require to evaluate the Agent traces.
+* Test cases are typically composed into collections termed as evaluation datasets.
+* Each test case may contain multiple graders or scorers.
+
+Grading/Scoring types:
+
+* Code-based: String matching, binary tests, specific conditions.
+* Model-based: Language judging, guideline judging, behaviour judging, rubric scoring,
+  nuanced conditions.
+* Human-based: None (For future work)
+
+Evaluation harness:
+
+* MLFlow SDK is used for defining, running and orchestrating evaluations.
+
+Guardrails:
+
+* Validating user input and model output for relevance and safety.
+* OpenAI Agent SDK is used to define guardrails.
+
 ## Getting Started
 
 ### Prerequisites
