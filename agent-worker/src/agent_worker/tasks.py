@@ -12,7 +12,7 @@ from celery import signals
 from agent_worker import config
 from agent_worker.agent import run_research
 from agent_worker.celery_app import app
-from agent_worker.evaluation.simple_eval import run_evaluation
+from agent_worker.evaluation.runner import run_evaluation
 from agent_worker.tracing import configure_tracing
 
 logger = logging.getLogger(__name__)
