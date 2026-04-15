@@ -99,7 +99,6 @@ def run_suite(
     Returns:
         The ``EvaluationResult`` containing per-row and aggregate metrics.
     """
-    suite_name = "groundedness"
     if suite_name not in _SUITE_REGISTRY:
         raise ValueError(f"Unknown suite '{suite_name}'. Choose from: {SUITE_NAMES}")
 
