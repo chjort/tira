@@ -26,12 +26,12 @@ from agent_worker.evaluation.scorers.code_based import (
     ticker_symbols_present,
     top_companies_extracted,
 )
-# from agent_worker.evaluation.scorers.model_based import (
-#     coverage_completeness_score,
-#     factual_specificity_score,
-#     groundedness_score,
-#     source_quality_score,
-# )
+from agent_worker.evaluation.scorers.model_based import (
+    coverage_completeness_score,
+    factual_specificity_score,
+    groundedness_score,
+    source_quality_score,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -39,15 +39,14 @@ _SUITE_REGISTRY: dict[str, dict] = {
     "groundedness": {
         "dataset": "groundedness",
         "scorers": [
-            inline_citations_present,
-            # groundedness_score,
+            groundedness_score,
         ],
     },
     "source_quality": {
         "dataset": "source_quality",
         "scorers": [
             inline_citations_present,
-            # source_quality_score,
+            source_quality_score,
         ],
     },
     "coverage": {
@@ -61,14 +60,14 @@ _SUITE_REGISTRY: dict[str, dict] = {
             top_companies_extracted,
             competitive_landscape_table_present,
             risk_register_table_present,
-            # coverage_completeness_score,
+            coverage_completeness_score,
         ],
     },
     "factual_accuracy": {
         "dataset": "factual_accuracy",
         "scorers": [
             financial_comparison_section_present,
-            # factual_specificity_score,
+            factual_specificity_score,
         ],
     },
 }
