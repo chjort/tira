@@ -30,12 +30,12 @@ from agent_worker.evaluation.scorers.code_based import risk_register_table_prese
 from agent_worker.evaluation.scorers.code_based import ticker_symbols_present
 from agent_worker.evaluation.scorers.code_based import top_companies_extracted
 
-# from agent_worker.evaluation.scorers.model_based import (
-#     coverage_completeness_score,
-#     factual_specificity_score,
-#     groundedness_score,
-#     source_quality_score,
-# )
+from agent_worker.evaluation.scorers.model_based import (
+    coverage_completeness_score,
+    factual_specificity_score,
+    groundedness_score,
+    source_quality_score,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -51,10 +51,10 @@ _SCORERS = [
     competitive_landscape_table_present,
     risk_register_table_present,
     financial_comparison_section_present,
-    # groundedness_score,
-    # source_quality_score,
-    # coverage_completeness_score,
-    # factual_specificity_score,
+    groundedness_score,
+    source_quality_score,
+    coverage_completeness_score,
+    factual_specificity_score,
 ]
 
 
