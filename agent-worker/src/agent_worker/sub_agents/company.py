@@ -3,7 +3,6 @@
 from agents import Agent, ModelSettings, WebSearchTool
 
 from agent_worker.prompts import COMPANY_EXPOSURE_INSTRUCTIONS
-# from agent_worker.tools import web_search
 
 _MODEL = "openai_gpt52"
 _SETTINGS = ModelSettings(temperature=0.2)
@@ -22,5 +21,4 @@ def build_company_agent() -> Agent:
         model=_MODEL,
         model_settings=_SETTINGS,
         tools=[WebSearchTool()],
-        # tools=[web_search],
     )
