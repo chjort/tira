@@ -1,9 +1,9 @@
 """Market Dynamics sub-agent builder."""
 
-from agents import Agent, ModelSettings
+from agents import Agent, ModelSettings, WebSearchTool
 
 from agent_worker.prompts import MARKET_DYNAMICS_INSTRUCTIONS
-from agent_worker.tools import web_search
+# from agent_worker.tools import web_search
 
 _MODEL = "openai_gpt52"
 _SETTINGS = ModelSettings(temperature=0.2)
@@ -20,5 +20,6 @@ def build_market_agent() -> Agent:
         instructions=MARKET_DYNAMICS_INSTRUCTIONS,
         model=_MODEL,
         model_settings=_SETTINGS,
-        tools=[web_search],
+        tools=[WebSearchTool()],
+        # tools=[web_search],
     )

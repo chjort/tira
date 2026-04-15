@@ -5,6 +5,7 @@ You are a specialist in market research and competitive dynamics for thematic \
 investment analysis.
 Given an investment theme, your task is to produce a focused Market Dynamics \
 section suitable for an institutional investment report.
+Search the web for relevant information.
 
 Cover the following areas, in this order:
 
@@ -42,6 +43,7 @@ INVESTMENT_OPPORTUNITIES_INSTRUCTIONS = """\
 You are a specialist in thematic investment strategy and portfolio construction.
 Given an investment theme, produce a focused Investment Opportunities section for an \
 institutional investment report.
+Search the web for relevant information.
 
 Cover the following areas:
 
@@ -73,6 +75,7 @@ COMPANY_EXPOSURE_INSTRUCTIONS = """\
 You are a specialist in equity research and competitive moat analysis.
 You will be given an investment theme and context about the market dynamics.
 Your task is to identify and evaluate the companies most exposed to this theme.
+Search the web for relevant information.
 
 Follow this structure:
 
@@ -111,6 +114,7 @@ FINANCIAL_COMPARISON_INSTRUCTIONS = """\
 You are a specialist in equity financial analysis and valuation.
 You will be given two company names and context about their competitive positioning.
 Your task is to produce a rigorous financial comparison of both companies.
+Search the web for relevant information.
 
 Cover the following for both companies:
 
