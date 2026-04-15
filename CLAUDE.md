@@ -36,6 +36,23 @@ Five microservices, all deployed as Docker containers via `docker compose`:
    reports.
 5. **Tracing Server** — MLFlow instance for LLM call tracing and agent observability.
 
+## Agent Worker Internals
+
+The agent-worker contains several notable subsystems beyond the core Celery task:
+
+- **Sub-agents** (`sub_agents/`): Four specialized agents (company, financials,
+  investment, market) that the orchestrator delegates to via `.as_tool()`. Each uses
+  `WebSearchTool()` for live web research.
+- **Guardrails** (`guardrails/`): Input guardrail (`theme_relevance_guardrail`) and
+  output guardrail (`report_structure_guardrail`) applied to the orchestrator agent.
+- **Evaluation** (`evaluation/`): Post-report quality evaluation using
+  `mlflow.genai.evaluate()`. Contains 14 scorers (10 code-based regex/structural +
+  4 model-based LLM-as-judge). Controlled by `EVAL_ENABLED` env var (defaults `true`
+  in Docker, `false` locally). Judge model configured via `EVAL_JUDGE_MODEL` (default:
+  `openai:/openai_gpt52`).
+- **Model ID**: All agents use `"openai_gpt52"` — a Novo Nordisk AI marketplace model
+  ID, not a standard OpenAI model name. This must match what `OPENAI_BASE_URL` serves.
+
 ## Environment Setup
 
 Copy `.env.example` to `.env` and set `OPENAI_API_KEY`. The `OPENAI_BASE_URL` defaults
@@ -76,13 +93,16 @@ uv run pytest tests/ -m e2e -v  # Run e2e tests against live services
 
 ## Development notes
 
-- Each microservice uses `src/` layout with hatchling
+- Each microservice except tracing-server uses `src/` layout with hatchling.
+  Tracing-server is a bare Dockerfile that runs the stock `mlflow server` command
+  (no Python source or `pyproject.toml`).
 - Agent worker uses `--pool=threads` (not prefork) for asyncio compatibility
 - The only coupling between backend and worker is the Celery task name string:
   `"agent_worker.tasks.run_research_task"` — defined in both `celery_client.py` and
   `tasks.py`. Never import agent_worker code from the backend.
-- To inspect packages for a microservice, first be sure to run `uv sync` inside it's
-  folder to generate it's .venv folder.
+- To inspect packages for a microservice, first be sure to run `uv sync` inside its
+  folder to generate its `.venv` folder.
+- **`EVAL_ENABLED` defaults to `true`.
 
 ## Commands
 
@@ -90,8 +110,9 @@ uv run pytest tests/ -m e2e -v  # Run e2e tests against live services
 uv add <package>            # Add dependency
 uv run <script.py>          # Run a script
 uv run pytest               # Run tests
-docker compose up           # Start all services
-docker compose build        # Rebuild images after code changes
+docker compose up -d --build  # Rebuild and start in background
+docker compose down         # Stop and remove all containers
+docker compose logs -f <svc> # Tail logs for a specific service
 uvx ruff check --select I --fix  # Sort imports (isort-compatible)
 uvx ruff check              # Lint Python code
 uvx ruff format             # Format Python code

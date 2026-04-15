@@ -169,6 +169,14 @@ technological development in the AI space.
 * Interface: MLFlow SDK
 * Deployment: As a docker container through Docker Compose
 
+### Agent internals
+
+* The research task is conducted by a multi-agent worker with an Orchestrator at the
+  center and sub-agents that the Orchestrator invoke as tools.
+* Guardrails are applied to both inputs and outputs.
+* Evaluation is performed using MLFlow with multiple custom scorers.
+* OpenAI GPT5.2 is the primary model used across all Agents.
+
 ### Technology choice motivation
 
 * OpenAI Agent SDK had a good developer experience and offers a lot of flexibility.
