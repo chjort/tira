@@ -1,7 +1,5 @@
 """Celery task definitions for the research agent worker."""
 
-import asyncio
-
 from celery import signals
 
 from agent_worker.agent import run_research
@@ -22,10 +20,7 @@ def on_worker_init(**kwargs):
     default_retry_delay=30,
 )
 def run_research_task(self, theme: str) -> str:
-    """Run the async research agent and return a Markdown report.
-
-    Uses asyncio.run() to bridge the sync Celery task with the async Agent SDK.
-    Each invocation creates a fresh event loop, which is safe with --pool=threads.
+    """Run the research agent synchronously and return a Markdown report.
 
     Args:
         theme: The investment theme to research.
@@ -34,6 +29,6 @@ def run_research_task(self, theme: str) -> str:
         Markdown report string, stored in the Celery result backend.
     """
     try:
-        return asyncio.run(run_research(theme))
+        return run_research(theme)
     except Exception as exc:
         raise self.retry(exc=exc)

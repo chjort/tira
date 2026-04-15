@@ -12,4 +12,4 @@ RUN uv sync --no-dev
 COPY src/ ./src/
 
 CMD ["uv", "run", "celery", "-A", "agent_worker.celery_app", "worker", \
-     "--loglevel=info", "--pool=threads", "--concurrency=4"]
+     "--loglevel=info", "--pool=prefork", "--concurrency=4"]

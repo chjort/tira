@@ -3,7 +3,7 @@
 from agents import Agent, ModelSettings, Runner
 from agents.models.openai_provider import OpenAIProvider
 from agents.run import RunConfig
-from openai import AsyncOpenAI
+from openai import OpenAI
 
 from agent_worker.config import OPENAI_BASE_URL
 from agent_worker.models import (
@@ -77,7 +77,7 @@ def build_orchestrator() -> Agent:
     )
 
 
-async def run_research(theme: str) -> str:
+def run_research(theme: str) -> str:
     """Execute the multi-agent research pipeline for a given investment theme.
 
     Orchestrates four specialist sub-agents (Market Dynamics, Investment
@@ -90,13 +90,13 @@ async def run_research(theme: str) -> str:
     Returns:
         A Markdown-formatted institutional research report.
     """
-    async with AsyncOpenAI(base_url=OPENAI_BASE_URL) as client:
+    with OpenAI(base_url=OPENAI_BASE_URL) as client:
         orchestrator = build_orchestrator()
         prompt = (
             f"Conduct comprehensive thematic investment research on: {theme}. "
             f"Follow the procedure in your instructions."
         )
-        result = await Runner.run(
+        result = Runner.run_sync(
             orchestrator,
             prompt,
             max_turns=_ORCHESTRATOR_MAX_TURNS,
