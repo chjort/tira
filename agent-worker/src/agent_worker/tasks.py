@@ -3,6 +3,10 @@
 import asyncio
 import logging
 
+from agents.exceptions import (
+    InputGuardrailTripwireTriggered,
+    OutputGuardrailTripwireTriggered,
+)
 from celery import signals
 
 from agent_worker import config
@@ -61,7 +65,11 @@ def run_research_task(self, theme: str) -> str:
         Markdown report string, stored in the Celery result backend.
     """
     try:
-        report = asyncio.run(run_research(theme))
+        return asyncio.run(run_research(theme))
+    except InputGuardrailTripwireTriggered as exc:
+        return f"ERROR: Invalid or unsafe theme — {exc}"
+    except OutputGuardrailTripwireTriggered as exc:
+        return f"ERROR: Report failed structural validation — {exc}"
     except Exception as exc:
         raise self.retry(exc=exc)
 

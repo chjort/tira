@@ -6,6 +6,8 @@ from agents.run import RunConfig
 from openai import AsyncOpenAI
 
 from agent_worker.config import OPENAI_BASE_URL
+from agent_worker.guardrails.input_guardrails import theme_relevance_guardrail
+from agent_worker.guardrails.output_guardrails import report_structure_guardrail
 from agent_worker.models import (
     CompanyResearchInput,
     FinancialComparisonInput,
@@ -74,6 +76,8 @@ def build_orchestrator() -> Agent:
         model=_MODEL,
         model_settings=_SETTINGS,
         tools=[market_tool, investment_tool, company_tool, financials_tool],
+        input_guardrails=[theme_relevance_guardrail],
+        output_guardrails=[report_structure_guardrail],
     )
 
 
