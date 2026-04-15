@@ -95,7 +95,8 @@ def run_suite(suite_name: str, theme: str, report: str) -> None:
     dataset = load_dataset(spec["dataset"])
     eval_data = build_eval_data(dataset, theme, report)
 
-    mlflow.genai.evaluate(data=eval_data, scorers=spec["scorers"])
+    with mlflow.start_run(run_name=f"eval:{suite_name}:{theme}"):
+        mlflow.genai.evaluate(data=eval_data, scorers=spec["scorers"])
 
 
 def run_evaluation(
