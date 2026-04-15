@@ -65,7 +65,7 @@ def run_research_task(self, theme: str) -> str:
         Markdown report string, stored in the Celery result backend.
     """
     try:
-        return asyncio.run(run_research(theme))
+        report = asyncio.run(run_research(theme))
     except InputGuardrailTripwireTriggered as exc:
         return f"ERROR: Invalid or unsafe theme — {exc}"
     except OutputGuardrailTripwireTriggered as exc:
