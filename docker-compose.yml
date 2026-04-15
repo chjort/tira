@@ -32,7 +32,7 @@ services:
       - OPENAI_BASE_URL=${OPENAI_BASE_URL:-https://api.marketplace.novo-genai.com/v1}
       - MLFLOW_TRACKING_URI=http://tracing-server:5000
       - MLFLOW_EXPERIMENT_NAME=TIRA Research Agent
-      - EVAL_ENABLED=${EVAL_ENABLED:-false}
+      - EVAL_ENABLED=${EVAL_ENABLED:-true}
       - EVAL_SUITES=${EVAL_SUITES:-groundedness,source_quality,coverage,factual_accuracy}
       - EVAL_JUDGE_MODEL=${EVAL_JUDGE_MODEL:-openai:/openai_gpt52}
     depends_on:
