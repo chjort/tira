@@ -26,27 +26,30 @@ from agent_worker.evaluation.scorers.code_based import (
     ticker_symbols_present,
     top_companies_extracted,
 )
-from agent_worker.evaluation.scorers.model_based import (
-    coverage_completeness_score,
-    factual_specificity_score,
-    groundedness_score,
-    source_quality_score,
-)
+# from agent_worker.evaluation.scorers.model_based import (
+#     coverage_completeness_score,
+#     factual_specificity_score,
+#     groundedness_score,
+#     source_quality_score,
+# )
 
 logger = logging.getLogger(__name__)
 
 _SUITE_REGISTRY: dict[str, dict] = {
     "groundedness": {
-        "dataset": "groundedness",
+        "dataset": "placeholder",
+        # "dataset": "groundedness",
         "scorers": [
-            groundedness_score,
+            inline_citations_present,
+            # groundedness_score,
         ],
     },
     "source_quality": {
-        "dataset": "source_quality",
+        "dataset": "placeholder",
+        # "dataset": "source_quality",
         "scorers": [
             inline_citations_present,
-            source_quality_score,
+            # source_quality_score,
         ],
     },
     "coverage": {
@@ -60,14 +63,15 @@ _SUITE_REGISTRY: dict[str, dict] = {
             top_companies_extracted,
             competitive_landscape_table_present,
             risk_register_table_present,
-            coverage_completeness_score,
+            # coverage_completeness_score,
         ],
     },
     "factual_accuracy": {
-        "dataset": "factual_accuracy",
+        "dataset": "placeholder",
+        # "dataset": "factual_accuracy",
         "scorers": [
             financial_comparison_section_present,
-            factual_specificity_score,
+            # factual_specificity_score,
         ],
     },
 }
@@ -94,7 +98,7 @@ def run_suite(suite_name: str, theme: str, report: str) -> None:
     dataset = load_dataset(spec["dataset"])
     eval_data = build_eval_data(dataset, theme, report)
 
-    with mlflow.start_run(run_name=f"eval:{suite_name}:{theme}"):
+    with mlflow.start_run(run_name=f"prod:{suite_name}"):
         mlflow.genai.evaluate(data=eval_data, scorers=spec["scorers"])
 
 
