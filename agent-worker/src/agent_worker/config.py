@@ -15,3 +15,5 @@ MLFLOW_EXPERIMENT_NAME: str = os.environ.get(
 OPENAI_BASE_URL: str = os.environ.get(
     "OPENAI_BASE_URL", "https://api.marketplace.novo-genai.com/v1"
 )
+EVAL_JUDGE_MODEL: str = os.environ.get("EVAL_JUDGE_MODEL", "openai_gpt52")
+EVAL_ENABLED: bool = os.environ.get("EVAL_ENABLED", "false").lower() == "true"

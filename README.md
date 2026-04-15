@@ -26,11 +26,6 @@ Success criteria:
 3. Sufficient coverage of requested information.
 4. Facts and numbers are exact match from source and verifiable.
 
-Test suites:
-
-* A test suite for each of the four success criteria with each suite containing
-  multiple test cases.
-
 Test cases:
 
 * A measurable task that defines input instructions and expected output/behavior
