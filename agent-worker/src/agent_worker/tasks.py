@@ -67,9 +67,9 @@ def run_research_task(self, theme: str) -> str:
     try:
         report = asyncio.run(run_research(theme))
     except InputGuardrailTripwireTriggered as exc:
-        return f"ERROR: Invalid or unsafe theme — {exc}"
+        return f"GUARDRAIL: Invalid or unsafe theme — {exc}"
     except OutputGuardrailTripwireTriggered as exc:
-        return f"ERROR: Report failed structural validation — {exc}"
+        return f"GUARDRAIL: Report failed structural validation — {exc}"
     except Exception as exc:
         raise self.retry(exc=exc)
 

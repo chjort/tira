@@ -6,7 +6,9 @@ import streamlit as st
 
 from frontend.api_client import get_result, get_status, submit_research
 
-TERMINAL_STATUSES: frozenset[str] = frozenset({"SUCCESS", "FAILURE", "REVOKED"})
+TERMINAL_STATUSES: frozenset[str] = frozenset(
+    {"SUCCESS", "FAILURE", "REVOKED", "GUARDRAIL"}
+)
 POLL_INTERVAL_SECONDS: int = 3
 
 
@@ -54,7 +56,12 @@ def _poll_and_update_tasks() -> bool:
 
         if task["status"] == "SUCCESS" and task["result"] is None:
             result_data = get_result(task["task_id"])
-            task["result"] = result_data["result"]
+            result = result_data["result"]
+            if isinstance(result, str) and result.startswith("GUARDRAIL:"):
+                task["status"] = "GUARDRAIL"
+                task["error"] = result
+            else:
+                task["result"] = result
 
         if task["status"] == "FAILURE" and task["error"] is None:
             task["error"] = status_data.get("error", "Unknown error")
@@ -94,6 +101,9 @@ def _render_task_list() -> None:
                     mime="text/markdown",
                     key=f"download_{task_id}",
                 )
+
+            elif status == "GUARDRAIL":
+                st.error(f"Research blocked by guardrail: {task['error']}")
 
             elif status == "FAILURE":
                 st.error(f"Research failed: {task['error']}")
