@@ -12,20 +12,24 @@ Usage from the Celery task layer::
 import logging
 
 import mlflow
-
-from agent_worker.evaluation.harness import build_eval_data, load_dataset
+from agent_worker.config import MLFLOW_EXPERIMENT_NAME
+from agent_worker.evaluation.harness import build_eval_data
+from agent_worker.evaluation.harness import load_dataset
 from agent_worker.evaluation.scorers.code_based import (
     competitive_landscape_table_present,
-    financial_comparison_section_present,
-    inline_citations_present,
-    markdown_table_count,
-    minimum_word_count,
-    required_sections_present,
-    required_subsections_present,
-    risk_register_table_present,
-    ticker_symbols_present,
-    top_companies_extracted,
 )
+from agent_worker.evaluation.scorers.code_based import (
+    financial_comparison_section_present,
+)
+from agent_worker.evaluation.scorers.code_based import inline_citations_present
+from agent_worker.evaluation.scorers.code_based import markdown_table_count
+from agent_worker.evaluation.scorers.code_based import minimum_word_count
+from agent_worker.evaluation.scorers.code_based import required_sections_present
+from agent_worker.evaluation.scorers.code_based import required_subsections_present
+from agent_worker.evaluation.scorers.code_based import risk_register_table_present
+from agent_worker.evaluation.scorers.code_based import ticker_symbols_present
+from agent_worker.evaluation.scorers.code_based import top_companies_extracted
+
 # from agent_worker.evaluation.scorers.model_based import (
 #     coverage_completeness_score,
 #     factual_specificity_score,
@@ -43,7 +47,6 @@ _SUITE_REGISTRY: dict[str, dict] = {
             inline_citations_present,
             # groundedness_score,
         ],
-        "run_id": "e161f4e08a944677a6d41c1fb8333a47",
     },
     "source_quality": {
         "dataset": "placeholder",
@@ -52,7 +55,6 @@ _SUITE_REGISTRY: dict[str, dict] = {
             inline_citations_present,
             # source_quality_score,
         ],
-        "run_id": "519266ef44444e668982b64a68d6c978",
     },
     "coverage": {
         "dataset": "coverage",
@@ -67,7 +69,6 @@ _SUITE_REGISTRY: dict[str, dict] = {
             risk_register_table_present,
             # coverage_completeness_score,
         ],
-        "run_id": "5057600607a147a39728f16d319888fa",
     },
     "factual_accuracy": {
         "dataset": "placeholder",
@@ -76,11 +77,32 @@ _SUITE_REGISTRY: dict[str, dict] = {
             financial_comparison_section_present,
             # factual_specificity_score,
         ],
-        "run_id": "34a3e9406cca4f66b0698577583405d5",
     },
 }
 
 SUITE_NAMES: list[str] = list(_SUITE_REGISTRY.keys())
+
+
+def _get_run_id_by_name(run_name: str) -> str | None:
+    """Get the most recent run_id for a given run name.
+
+    Args:
+        run_name: The MLflow run name to search for.
+
+    Returns:
+        The run_id of the most recent matching run, or ``None`` if no run
+        with that name exists.
+    """
+    runs = mlflow.search_runs(
+        experiment_names=[MLFLOW_EXPERIMENT_NAME],
+        filter_string=f"attributes.run_name = '{run_name}'",
+        order_by=["start_time DESC"],
+        max_results=1,
+    )
+
+    if not runs.empty:
+        return runs.iloc[0]["run_id"]
+    return None
 
 
 def run_suite(suite_name: str, theme: str, report: str) -> None:
@@ -102,7 +124,9 @@ def run_suite(suite_name: str, theme: str, report: str) -> None:
     dataset = load_dataset(spec["dataset"])
     eval_data = build_eval_data(dataset, theme, report)
 
-    with mlflow.start_run(run_id=spec["run_id"]):
+    run_name = f"prod:{suite_name}"
+    run_id = _get_run_id_by_name(run_name)
+    with mlflow.start_run(run_id=run_id, run_name=run_name):
         mlflow.genai.evaluate(data=eval_data, scorers=spec["scorers"])
 
 
