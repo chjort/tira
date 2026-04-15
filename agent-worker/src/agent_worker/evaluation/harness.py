@@ -1,8 +1,6 @@
 """Evaluation harness for generating reports and preparing evaluation data.
 
 Provides utilities for:
-- MLflow experiment setup
-- Generating and caching agent research reports
 - Loading evaluation datasets
 - Building the data structures expected by ``mlflow.genai.evaluate()``
 """
@@ -54,9 +52,7 @@ def build_eval_data(
     """
     eval_rows = []
     for case in dataset:
-        # Everything except 'theme' goes into expectations for scorer access.
-        expectations = {k: v for k, v in case.items() if k != "theme"}
-
+        expectations = {k: v for k, v in case.items()}
         eval_rows.append(
             {
                 "inputs": {"theme": theme},
