@@ -102,6 +102,8 @@ curl -X POST http://localhost:8000/research \
   -d '{"theme": "Quantum Computing"}'
 ```
 
+A research task is expected to take between ~250 seconds to ~500 seconds.
+
 ### Running Tests
 
 Tests are written using `pytest` and test cases are written to verify that the
