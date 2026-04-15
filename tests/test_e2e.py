@@ -34,7 +34,7 @@ def test_full_research_flow(
     assert data["status"] == "PENDING"
 
     # 2. Poll until the task completes (agent calls take time)
-    final_status = wait_for_task(task_id, timeout=300)
+    final_status = wait_for_task(task_id, timeout=600)
     assert final_status == "SUCCESS"
 
     # 3. Retrieve the full report
