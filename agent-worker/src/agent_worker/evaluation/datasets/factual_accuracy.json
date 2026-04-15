@@ -1,0 +1,20 @@
+[
+  {
+    "id": "FA-001",
+    "theme": "Quantum Computing",
+    "description": "Financial comparison table must contain specific numeric values with year annotations",
+    "grading_notes": "Revenue figures must be in USD millions with fiscal year. Margins must be expressed as specific percentages. Valuation multiples (P/E, EV/EBITDA) must be exact numbers, not vague ranges."
+  },
+  {
+    "id": "FA-002",
+    "theme": "Clean Energy",
+    "description": "Market TAM must include a year of estimate and a specific USD figure",
+    "grading_notes": "TAM must be a specific dollar amount (e.g. '$1.2 trillion by 2030') not a vague range. CAGR must be a specific percentage over a named year range (e.g. '15.3% CAGR from 2024 to 2030')."
+  },
+  {
+    "id": "FA-003",
+    "theme": "Agentic AI",
+    "description": "All numerical claims must be precise and verifiable",
+    "grading_notes": "Every number in the report (market size, growth rate, revenue, margin, valuation multiple) must be specific, include units, and reference a time period or as-of date. Approximations like 'around $X' or 'strong growth' are insufficient."
+  }
+]

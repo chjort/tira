@@ -15,4 +15,5 @@ dev = [
 [tool.pytest.ini_options]
 markers = [
     "e2e: requires all services running via docker compose",
+    "eval: evaluation suite, requires MLflow and OpenAI API key",
 ]

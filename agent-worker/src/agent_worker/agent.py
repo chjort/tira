@@ -76,7 +76,7 @@ def build_orchestrator() -> Agent:
         model=_MODEL,
         model_settings=_SETTINGS,
         tools=[market_tool, investment_tool, company_tool, financials_tool],
-        input_guardrails=[theme_relevance_guardrail],
+        input_guardrails=[theme_relevanWce_guardrail],
         output_guardrails=[report_structure_guardrail],
     )
 
