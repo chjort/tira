@@ -5,7 +5,7 @@ from agents.models.openai_provider import OpenAIProvider
 from agents.run import RunConfig
 from openai import AsyncOpenAI
 
-from agent_worker.config import OPENAI_BASE_URL
+from agent_worker.config import AGENT_MODEL, OPENAI_BASE_URL
 from agent_worker.guardrails.input_guardrails import theme_relevance_guardrail
 from agent_worker.guardrails.output_guardrails import report_structure_guardrail
 from agent_worker.models import (
@@ -19,7 +19,6 @@ from agent_worker.sub_agents.financials import build_financials_agent
 from agent_worker.sub_agents.investment import build_investment_agent
 from agent_worker.sub_agents.market import build_market_agent
 
-_MODEL = "openai_gpt52"
 _SETTINGS = ModelSettings(temperature=0.2)
 _ORCHESTRATOR_MAX_TURNS = 50
 _SUB_AGENT_MAX_TURNS = 15
@@ -73,7 +72,7 @@ def build_orchestrator() -> Agent:
     return Agent(
         name="TIRA Orchestrator",
         instructions=ORCHESTRATOR_INSTRUCTIONS,
-        model=_MODEL,
+        model=AGENT_MODEL,
         model_settings=_SETTINGS,
         tools=[market_tool, investment_tool, company_tool, financials_tool],
         input_guardrails=[theme_relevance_guardrail],

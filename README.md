@@ -71,12 +71,17 @@ cp .env.example .env
 OPENAI_API_KEY=sk-...
 ```
 
-Optionally, set a custom base URL for the LLM provider. This defaults to
-`https://api.marketplace.novo-genai.com/v1`:
+Optionally, set a custom base URL for the LLM provider and model. This defaults to
+`https://api.marketplace.novo-genai.com/v1` with `openai_gpt52`:
 
 ```
 OPENAI_BASE_URL=https://api.marketplace.novo-genai.com/v1
+AGENT_MODEL=openai_gpt52
 ```
+
+> NOTE: I am using Novo Nordisks internal LLM provider platform because that is where I
+> can access models. Make sure to set this to your own provider and model if you want to
+> run it.
 
 3. Build and start all services:
 
@@ -102,7 +107,12 @@ curl -X POST http://localhost:8000/research \
   -d '{"theme": "Quantum Computing"}'
 ```
 
-A research task is expected to take between ~250 seconds to ~500 seconds.
+Multiple research tasks can be submitted to run concurrently. A research task is
+expected to take between ~250 seconds to ~500 seconds.
+
+> NOTE: A warning with `'AsyncHttpxClientWrapper' object has no attribute '_state'`
+> may show in the container logs for the `agent-worker`. Simply ignore this warning,
+> it is harmless. It is a known bug with the OpenAI Agent SDK.
 
 ### Running Tests
 
@@ -176,6 +186,11 @@ technological development in the AI space.
 * Guardrails are applied to both inputs and outputs.
 * Evaluation is performed using MLFlow with multiple custom scorers.
 * OpenAI GPT5.2 is the primary model used across all Agents.
+
+> NOTE: The Novo Nordisk LLM provider URL seems to be incompatible with LLM-judges
+> in MLFlow, so the Model-based scorers are not working properly.
+> See `tira/agent-worker/src/agent_worker/evaluation/scorers/model_based.py` for the
+> intended behavior of each LLM judge.
 
 ### Technology choice motivation
 

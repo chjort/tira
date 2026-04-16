@@ -30,6 +30,7 @@ services:
       - CELERY_RESULT_BACKEND=redis://broker:6379/0
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - OPENAI_BASE_URL=${OPENAI_BASE_URL:-https://api.marketplace.novo-genai.com/v1}
+      - AGENT_MODEL=${AGENT_MODEL:-openai_gpt52}
       - MLFLOW_TRACKING_URI=http://tracing-server:5000
       - MLFLOW_EXPERIMENT_NAME=TIRA Research Agent
       - EVAL_ENABLED=${EVAL_ENABLED:-true}

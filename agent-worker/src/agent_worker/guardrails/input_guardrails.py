@@ -14,6 +14,8 @@ from agents import (
 )
 from pydantic import BaseModel, Field
 
+from agent_worker.config import AGENT_MODEL
+
 
 class ThemeValidationOutput(BaseModel):
     """Structured output from the theme validation guardrail agent."""
@@ -47,7 +49,7 @@ _THEME_VALIDATOR_AGENT = Agent(
         "3. rejection_reason: Explain why if either flag is False, else null."
     ),
     output_type=ThemeValidationOutput,
-    model="openai_gpt52",
+    model=AGENT_MODEL,
     model_settings=ModelSettings(temperature=0.0),
 )
 
