@@ -25,3 +25,17 @@ class TaskStatusResponse(BaseModel):
     status: Literal["PENDING", "STARTED", "SUCCESS", "FAILURE", "RETRY", "REVOKED"]
     result: str | None = None
     error: str | None = None
+
+
+class TaskRegistryEntry(BaseModel):
+    """A single task in the persistent task registry."""
+
+    task_id: str
+    theme: str
+    submitted_at: str
+
+
+class TaskListResponse(BaseModel):
+    """Response for listing all submitted research tasks."""
+
+    tasks: list[TaskRegistryEntry]

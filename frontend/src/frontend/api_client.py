@@ -33,6 +33,17 @@ def get_status(task_id: str) -> dict:
     return response.json()
 
 
+def list_tasks() -> list[dict]:
+    """Fetch all submitted research tasks from the backend registry.
+
+    Returns:
+        List of dicts with 'task_id', 'theme', and 'submitted_at' keys.
+    """
+    response = httpx.get(f"{BACKEND_URL}/research", timeout=10)
+    response.raise_for_status()
+    return response.json()["tasks"]
+
+
 def get_result(task_id: str) -> dict:
     """Retrieve the completed research report.
 

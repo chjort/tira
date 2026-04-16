@@ -11,7 +11,6 @@ import re
 from mlflow.entities import Feedback
 from mlflow.genai.scorers import scorer
 
-
 # ---------------------------------------------------------------------------
 # Section / subsection presence
 # ---------------------------------------------------------------------------

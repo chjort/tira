@@ -5,10 +5,9 @@ to a ``make_judge`` instance that evaluates the report on a 1-5 integer scale.
 The judge model and base URL are read from ``agent_worker.config``.
 """
 
+from agent_worker import config
 from mlflow.genai import make_judge
 from mlflow.genai.scorers import scorer
-
-from agent_worker import config
 
 # ---------------------------------------------------------------------------
 # Judge definitions (created once at module level)

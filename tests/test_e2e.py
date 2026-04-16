@@ -80,3 +80,23 @@ def test_result_before_completion_returns_error(
 
     resp = http_client.get(f"{backend_url}/research/{task_id}/result")
     assert resp.status_code == 400
+
+
+@pytest.mark.e2e
+def test_list_tasks_returns_submitted_task(
+    http_client: httpx.Client,
+    backend_url: str,
+):
+    """Verify GET /research returns a submitted task with its theme."""
+    theme = "Battery Storage"
+    resp = http_client.post(f"{backend_url}/research", json={"theme": theme})
+    assert resp.status_code == 200
+    task_id = resp.json()["task_id"]
+
+    resp = http_client.get(f"{backend_url}/research")
+    assert resp.status_code == 200
+    tasks = resp.json()["tasks"]
+    matching = [t for t in tasks if t["task_id"] == task_id]
+    assert len(matching) == 1
+    assert matching[0]["theme"] == theme
+    assert "submitted_at" in matching[0]

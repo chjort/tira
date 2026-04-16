@@ -4,7 +4,7 @@ import time
 
 import streamlit as st
 
-from frontend.api_client import get_result, get_status, submit_research
+from frontend.api_client import get_result, get_status, list_tasks, submit_research
 
 TERMINAL_STATUSES: frozenset[str] = frozenset(
     {"SUCCESS", "FAILURE", "REVOKED", "GUARDRAIL"}
@@ -12,10 +12,33 @@ TERMINAL_STATUSES: frozenset[str] = frozenset(
 POLL_INTERVAL_SECONDS: int = 3
 
 
+def _load_tasks_from_backend() -> list[dict]:
+    """Fetch the task registry from the backend and build session-state dicts.
+
+    Returns:
+        List of task dicts compatible with session state.
+    """
+    try:
+        registry_entries = list_tasks()
+    except Exception:
+        registry_entries = []
+
+    return [
+        {
+            "task_id": entry["task_id"],
+            "theme": entry["theme"],
+            "status": "PENDING",
+            "result": None,
+            "error": None,
+        }
+        for entry in registry_entries
+    ]
+
+
 def _init_session_state() -> None:
     """Initialise session state keys on first load."""
     if "tasks" not in st.session_state:
-        st.session_state["tasks"] = []
+        st.session_state["tasks"] = _load_tasks_from_backend()
 
 
 def _handle_form_submission() -> None:
